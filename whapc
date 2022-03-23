@@ -32,9 +32,9 @@ case "${input}"
 in
 p) profile=${OPTARG};;
 s) smartswitch=${OPTARG};;
-h) echo "${USAGE}" && exit 0;;
+h) echo "${USAGE}" && exit 0 ;;
 *)  echo
-	echo "Invalid option: -$input" ;;
+	echo "Invalid option: -$input" && exit 0 ;;
 esac
 done
 
