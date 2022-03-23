@@ -24,7 +24,7 @@ USAGE="$(basename "$0") [-h] [-s on/off] [-p music/headset/off] -- Program to ma
 where:
     -h : show this help message
     -s : change the state of smartswitch
-	-p : change profile"
+    -p : change profile"
 
 while getopts p:s:h input
 do
@@ -32,7 +32,7 @@ case "${input}"
 in
 p) profile=${OPTARG};;
 s) smartswitch=${OPTARG};;
-h) echo "${USAGE}";;
+h) echo "${USAGE}" && exit 0;;
 *)  echo
 	echo "Invalid option: -$input" ;;
 esac
