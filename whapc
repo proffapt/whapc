@@ -26,7 +26,7 @@ where:
     -s : change the state of smartswitch
 	-p : change profile"
 
-while getopts p:s:h: input
+while getopts p:s:h input
 do
 case "${input}"
 in
