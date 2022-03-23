@@ -1,7 +1,6 @@
 #!/bin/bash
 
-## Just writing some simple instructions to connect/disconnect and change audio profiles of Bluetooth devices (input and output) that
-## is having capability to play sound and record it. 
+## Just writing some simple instructions to connect/disconnect and change audio profiles of Bluetooth devices (input and output), i.e. having capability to play sound and record it. 
 ## From now on I will be calling it as "dual channel bluetooth device"!!
 
 ## Colors !
@@ -18,7 +17,8 @@ bold="\e[1m"
 uline="\e[4m"
 reset="\e[0m"
 
-## Obtaining the MAC-address and Name for your "dual channel bluetooth device" executed at the very first time only
+## Obtaining the MAC-address and Name for your "dual channel bluetooth device". 
+## Executed at the very first time only...
 
 if [ ! -f ".dms" ]; then
 
@@ -443,7 +443,7 @@ elif [[ $profile == 'off' ]]; then
 	echo -e "${green}[+]${reset} ${bold}Fetched the index number as $index_no !! ${reset}"
 	echo -e "${blue}----------------------------------------${reset}"
 
-	echo -e "${green}[+]${reset} ${bold}Setting profile suitable for ${green}OFF${reset} !! ${reset}"
+	echo -e "${green}[+]${reset} ${bold}Setting profile to ${green}OFF${reset} !! ${reset}"
 	echo ""
 
 	pactl set-card-profile $index_no off
