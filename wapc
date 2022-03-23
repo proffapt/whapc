@@ -71,12 +71,20 @@ fi
 
 ## Defining parameters for profiles and smart-switch
 
-while getopts p:s: input
+USAGE="$(basename "$0") [-h] [-s on/off] [-p music/headset/off] -- Program to manage multiple things related to dual channel bluetooth device under one roof.
+
+where:
+    -h : show this help message
+    -s : change the state of smartswitch
+	-p : change profile"
+
+while getopts p:s:h: input
 do
 case "${input}"
 in
 p) profile=${OPTARG};;
 s) smartswitch=${OPTARG};;
+h) echo "${USAGE}";;
 *)  echo
 	echo "Invalid option: -$input" ;;
 esac
