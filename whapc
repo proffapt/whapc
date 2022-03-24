@@ -19,7 +19,7 @@ reset="\e[0m"
 
 ## Defining parameters for profiles and smart-switch
 
-USAGE="$(basename "$0") [connect/disconnect] [-h] [-s on/off] [-p music/headset/off] -- Program to manage multiple things related to dual channel bluetooth device under one roof.
+USAGE="$(basename "$0") [-h] [connect/disconnect] [-s on/off] [-p music/headset/off] -- Program to manage multiple things related to dual channel bluetooth device under one roof.
 
 where:
     -h : show this help message
@@ -70,6 +70,8 @@ fi
 
 source ./.mac_id
 
+location=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
 ## Now the real stuff
 
 connection_status=$1
@@ -101,7 +103,7 @@ if [[ $smartswitch == 'off' ]]; then
 	if [ ! -f "$PULSE_CONFIG_FILE" ]; then
 
 		echo -e "${green}[+]${reset} ${bold}Copying the dummy config file to it's real location...${reset}"
-		cp ./.default_pulse_config.pa ~/.config/pulse/default.pa
+		cp $location/.default_pulse_config.pa ~/.config/pulse/default.pa
 
 		echo -e "${green}[+]${reset} ${bold}Editing the config file for pulseaudio...${reset}"
 		sed -i 's/load-module module-bluetooth-policy auto_switch=2/load-module module-bluetooth-policy auto_switch=false/g' ~/.config/pulse/default.pa	
@@ -130,7 +132,7 @@ elif [[ $smartswitch == 'on' ]]; then
 	if [ ! -f "$PULSE_CONFIG_FILE" ]; then
 
 		echo -e "${green}[+]${reset} ${bold}Copying the dummy config file to it's real location...${reset}"
-		cp ./.default_pulse_config.pa ~/.config/pulse/default.pa
+		cp $location/.default_pulse_config.pa ~/.config/pulse/default.pa
 
 		echo -e "${green}[+]${reset} ${bold}Editing the config file for pulseaudio...${reset}"
 		sed -i 's/load-module module-bluetooth-policy auto_switch=false/load-module module-bluetooth-policy auto_switch=2/g' ~/.config/pulse/default.pa
