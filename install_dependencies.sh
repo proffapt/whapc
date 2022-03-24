@@ -27,7 +27,7 @@ if [[ "$distro" == "Debian" ]]; then
 
 elif [[ "$distro" == "Arch" ]]; then
         
-        sudo pacman -Syu
+        sudo pacman -Syyy
         sudo pacman -Sy $REQ_MODULES
 
 elif [[ "$distro" == "Fedora" ]]; then
