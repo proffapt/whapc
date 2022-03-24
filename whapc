@@ -17,6 +17,44 @@ bold="\e[1m"
 uline="\e[4m"
 reset="\e[0m"
 
+## Obtaining the MAC-address and Name for your "dual channel bluetooth device". 
+## Executed at the very first time only...
+
+location=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+DMS_FILE=$location/.dms
+
+if [ ! -f "$DMS_FILE" ]; then
+
+	echo ""
+	echo -e "${bold}Listing out available bluetooth devices ever connected..${reset}"
+	echo ""
+
+    bt-device -l
+
+    echo  
+	read -p "$(echo -e "${white}[*]${reset} ${blue}Enter the name of bluetooth device: ${reset}")" device
+	echo ----------------------------------------
+    read -p "$(echo -e "${white}[*]${reset} ${blue}Enter the MAC-address of bluetooth device: ${reset}")" macid
+
+    echo "#!/bin/bash" > $location/.dms
+    echo "export device='$device' " >> $location/.dms
+    echo "export macid=$macid" >> $location/.dms
+fi
+
+source $location/.dms
+
+MACID_FILE=$location/.mac_id
+
+if [ ! -f "$MACID_FILE" ]; then
+
+	echo "#!/bin/bash" > $location/.mac_id
+    echo export mac_id="$macid" | tr : _ >> $location/.mac_id
+
+fi
+
+source $location/.mac_id
+
 ## Defining parameters for profiles and smart-switch
 
 USAGE="$(basename "$0") [-h] [connect/disconnect] [-s on/off] [-p music/headset/off] -- Program to manage multiple things related to dual channel bluetooth device under one roof.
@@ -37,40 +75,6 @@ h) echo "${USAGE}" && exit 0 ;;
 	echo "Invalid option: -$input" && exit 0 ;;
 esac
 done
-
-## Obtaining the MAC-address and Name for your "dual channel bluetooth device". 
-## Executed at the very first time only...
-
-location=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-
-if [ ! -f ".dms" ]; then
-
-	echo ""
-	echo -e "${bold}Listing out available bluetooth devices ever connected..${reset}"
-	echo ""
-
-    bt-device -l
-
-    echo  
-	read -p "$(echo -e "${white}[*]${reset} ${blue}Enter the name of bluetooth device: ${reset}")" device
-	echo ----------------------------------------
-    read -p "$(echo -e "${white}[*]${reset} ${blue}Enter the MAC-address of bluetooth device: ${reset}")" macid
-
-    echo "#!/bin/bash" > $location/.dms
-    echo "export device='$device' " >> $location/.dms
-    echo "export macid=$macid" >> $location/.dms
-fi
-
-source $location/.dms
-
-if [ ! -f ".mac_id" ]; then
-
-	echo "#!/bin/bash" > $location/.mac_id
-    echo export mac_id="$macid" | tr : _ >> $location/.mac_id
-
-fi
-
-source $location/.mac_id
 
 ## Now the real stuff
 
