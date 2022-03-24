@@ -112,9 +112,10 @@ Here are a few use cases of the script with currect set of features:
 2. Changing audio profiles:
 
    ```sh
-   whapc -p music
-   whapc -p headset
-   whapc -p off
+   whapc -p ad2p // music profile
+   whapc -p hsp // headset profile
+   whapc -p hfp // handsfree profile
+   whapc -p off 
    ```
 
 3. Changing the state of smart-switch:
