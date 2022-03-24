@@ -92,11 +92,13 @@ fi
 
 ## Logic for smart-switch
 
+PULSE_CONFIG_FILE=~/.config/pulse/default.pa
+
 if [[ $smartswitch == 'off' ]]; then
 
 	echo
 
-	if [ ! -f "~/.config/pulse/default.pa" ]; then
+	if [ ! -f "$PULSE_CONFIG_FILE" ]; then
 
 		echo -e "${green}[+]${reset} ${bold}Copying the dummy config file to it's real location...${reset}"
 		cp ./.default_pulse_config.pa ~/.config/pulse/default.pa
@@ -125,7 +127,7 @@ elif [[ $smartswitch == 'on' ]]; then
 
 	echo
 
-	if [ ! -f "~/.config/pulse/default.pa" ]; then
+	if [ ! -f "$PULSE_CONFIG_FILE" ]; then
 
 		echo -e "${green}[+]${reset} ${bold}Copying the dummy config file to it's real location...${reset}"
 		cp ./.default_pulse_config.pa ~/.config/pulse/default.pa
