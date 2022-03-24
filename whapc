@@ -95,10 +95,19 @@ fi
 if [[ $smartswitch == 'off' ]]; then
 
 	echo
-	echo -e "${green}[+]${reset} ${bold}Editing the config file for pulseaudio...${reset}"
 
-	cp ./.ss_off.pa ~/.config/pulse/default.pa
-	
+	if [ ! -f "~/.config/pulse/default.pa" ]; then
+
+		echo -e "${green}[+]${reset} ${bold}Copying the dummy config file to it's real location...${reset}"
+		cp ./.default_pulse_config.pa ~/.config/pulse/default.pa
+
+	else
+
+		echo -e "${green}[+]${reset} ${bold}Editing the config file for pulseaudio...${reset}"
+		sed -i 's/load-module module-bluetooth-policy auto_switch=2/load-module module-bluetooth-policy auto_switch=false/g' ~/.config/pulse/default.pa
+
+	fi
+
 	echo -e "${blue}----------------------------------------${reset}"
 	echo -e "${green}[+]${reset} ${bold}Restarting pulse demon...${reset}"
 	echo 
@@ -112,9 +121,18 @@ if [[ $smartswitch == 'off' ]]; then
 elif [[ $smartswitch == 'on' ]]; then 
 
 	echo
-	echo -e "${green}[+]${reset} ${bold}Editing the config file for pulseaudio...${reset}"
 
-	cp ./.ss_on.pa ~/.config/pulse/default.pa 
+	if [ ! -f "~/.config/pulse/default.pa" ]; then
+
+		echo -e "${green}[+]${reset} ${bold}Copying the dummy config file to it's real location...${reset}"
+		cp ./.default_pulse_config.pa ~/.config/pulse/default.pa
+
+	else
+
+		echo -e "${green}[+]${reset} ${bold}Editing the config file for pulseaudio...${reset}"
+		sed -i 's/load-module module-bluetooth-policy auto_switch=false/load-module module-bluetooth-policy auto_switch=2/g' ~/.config/pulse/default.pa
+
+	fi
 	
 	echo -e "${blue}----------------------------------------${reset}"
 	echo -e "${green}[+]${reset} ${bold}Restarting pulse demon...${reset}"
