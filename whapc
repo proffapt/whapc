@@ -168,7 +168,7 @@ fi
 
 ## Logic for profiles
 
-if [[ $profile == 'music' ]]; then
+if [[ $profile == 'ad2p' ]]; then
 
 	echo -e "${green}[+]${reset} ${bold}Fetching the index number for $device... !! ${reset}"
 
@@ -184,7 +184,7 @@ if [[ $profile == 'music' ]]; then
 
 	pactl set-card-profile $index_no a2dp_sink
 
-elif [[ $profile == 'headset' ]]; then
+elif [[ $profile == 'hsp' ]]; then
 
 	echo -e "${green}[+]${reset} ${bold}Fetching the index number for $device... !! ${reset}"
 
@@ -199,6 +199,22 @@ elif [[ $profile == 'headset' ]]; then
 	echo ""
 
 	pactl set-card-profile $index_no headset_head_unit
+
+elif [[ $profile == 'hfp' ]]; then
+
+	echo -e "${green}[+]${reset} ${bold}Fetching the index number for $device... !! ${reset}"
+
+	index_string=$(pactl list short cards | grep $mac_id)
+	index_no=${index_string:0:1}
+
+	echo -e "${blue}----------------------------------------${reset}"
+	echo -e "${green}[+]${reset} ${bold}Fetched the index number as $index_no !! ${reset}"
+	echo -e "${blue}----------------------------------------${reset}"
+
+	echo -e "${green}[+]${reset} ${bold}Setting profile suitable for ${green}SPEAKER+MICROPHONE${reset} !! ${reset}"
+	echo ""
+
+	pactl set-card-profile $index_no handsfree_head_unit
 
 elif [[ $profile == 'off' ]]; then
 	
