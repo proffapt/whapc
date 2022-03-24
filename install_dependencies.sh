@@ -30,17 +30,17 @@ elif [[ "$distro" == "Arch" ]]; then
         sudo pacman -Syu
         sudo pacman -Sy $REQ_MODULES
 
-elif [[ "$OSTYPE" == "Fedora" ]]; then
+elif [[ "$distro" == "Fedora" ]]; then
 
         sudo dnf update
         sudo dnf install -y $REQ_MODULES
 
-elif [[ "$OSTYPE" == "openSUSE" ]]; then
+elif [[ "$distro" == "openSUSE" ]]; then
 
         sudo zypper refresh
         sudo zypper in -y $REQ_MODULES
 
-elif [[ "$OSTYPE" == "Gentoo" ]]; then
+elif [[ "$distro" == "Gentoo" ]]; then
         
         sudo emerge --update --deep world
         sudo emerge $REQ_MODULES
