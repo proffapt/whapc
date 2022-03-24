@@ -49,7 +49,7 @@ if [ ! -f ".dms" ]; then
 
     bt-device -l
 
-    echo 
+    echo  
 	read -p "$(echo -e "${white}[*]${reset} ${blue}Enter the name of bluetooth device: ${reset}")" device
 	echo ----------------------------------------
     read -p "$(echo -e "${white}[*]${reset} ${blue}Enter the MAC-address of bluetooth device: ${reset}")" macid
