@@ -65,7 +65,7 @@ I will be illustrating you on how to setup the tool and what features it has in 
 2. Make the scripts executable
    ```sh
    cd whapc 
-   chmod +x ./whapc ./install_dependencies.sh
+   chmod +x ./whapc ./setup.sh
    ```
 3. Executing the setup script
    ```sh
