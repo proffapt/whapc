@@ -41,6 +41,8 @@ done
 ## Obtaining the MAC-address and Name for your "dual channel bluetooth device". 
 ## Executed at the very first time only...
 
+location=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
 if [ ! -f ".dms" ]; then
 
 	echo ""
@@ -54,23 +56,21 @@ if [ ! -f ".dms" ]; then
 	echo ----------------------------------------
     read -p "$(echo -e "${white}[*]${reset} ${blue}Enter the MAC-address of bluetooth device: ${reset}")" macid
 
-    echo "#!/bin/bash" > .dms
-    echo "export device='$device' " >> .dms
-    echo "export macid=$macid" >> .dms
+    echo "#!/bin/bash" > $location/.dms
+    echo "export device='$device' " >> $location/.dms
+    echo "export macid=$macid" >> $location/.dms
 fi
 
-source ./.dms
+source $location/.dms
 
 if [ ! -f ".mac_id" ]; then
 
-	echo "#!/bin/bash" > .mac_id
-    echo export mac_id="$macid" | tr : _ >> .mac_id
+	echo "#!/bin/bash" > $location/.mac_id
+    echo export mac_id="$macid" | tr : _ >> $location/.mac_id
 
 fi
 
-source ./.mac_id
-
-location=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+source $location/.mac_id
 
 ## Now the real stuff
 
