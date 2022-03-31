@@ -129,7 +129,7 @@ Here are a few use cases of the script with currect set of features:
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@proffapt](https://twitter.com/proffapt) - proffapt@protonmail.com
+Arpit Bhardwaj - [@proffapt](https://twitter.com/proffapt) - proffapt@protonmail.com
 
 Project Link: [https://github.com/proffapt/whapc](https://github.com/proffapt/whapc)
 
