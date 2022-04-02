@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ## Script to automate the process of making sure that all the dependencies required by this tool are satisfied.
 
 ## Colors !
