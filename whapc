@@ -1,61 +1,61 @@
 #!/bin/bash
 
-## Just writing some simple instructions to connect/disconnect and change audio profiles of Bluetooth devices (input and output), i.e. having capability to play sound and record it. 
-## From now on I will be calling it as "dual channel bluetooth device"!!
-
 ## Colors !
-
 red="\e[0;91m"
 blue="\e[0;94m"
-expand_bg="\e[K"
-blue_bg="\e[0;104m${expand_bg}"
-red_bg="\e[0;101m${expand_bg}"
-green_bg="\e[0;102m${expand_bg}"
 green="\e[0;92m"
 white="\e[0;97m"
 bold="\e[1m"
-uline="\e[4m"
 reset="\e[0m"
 
-## Obtaining the MAC-address and Name for your "dual channel bluetooth device". 
-## Executed at the very first time only...
-
+# Repeatedly used stuff
 location=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-DMS_FILE=$location/.dms
+CD() {
+	echo
+	bluetoothctl "$1" "$macid"
+	echo -e "${blue}----------------------------------------${reset}"
+}
 
-if [ ! -f "$DMS_FILE" ]; then
+set_smartswitch() {
+	echo
+	if [ ! -f "$PULSE_CONFIG_FILE" ]; then
+		echo -e "${green}[+]${reset} ${bold}Copying the dummy config file to it's real location...${reset}"
+		cp "$location"/.default_pulse_config.pa ~/.config/pulse/default.pa
 
-	echo ""
-	echo -e "${bold}Listing out available bluetooth devices ever connected..${reset}"
-	echo ""
+		echo -e "${green}[+]${reset} ${bold}Editing the config file for pulseaudio...${reset}"
+		sed -i "s/load-module module-bluetooth-policy auto_switch=$1/load-module module-bluetooth-policy auto_switch=$2/g" ~/.config/pulse/default.pa
+	else
+		echo -e "${green}[+]${reset} ${bold}Editing the config file for pulseaudio...${reset}"
+		sed -i "s/load-module module-bluetooth-policy auto_switch=$1/load-module module-bluetooth-policy auto_switch=$2/g" ~/.config/pulse/default.pa
+	fi
+	
+	echo -e "${blue}----------------------------------------${reset}"
+	echo -e "${green}[+]${reset} ${bold}Restarting pulse demon...${reset}
+	"
+	pulseaudio -k
+	bluetoothctl connect "$macid"
 
-    bt-device -l
+	sleep 2
+}
 
-    echo  
-	read -p "$(echo -e "${white}[*]${reset} ${blue}Enter the name of bluetooth device: ${reset}")" device
-	echo ----------------------------------------
-    read -p "$(echo -e "${white}[*]${reset} ${blue}Enter the MAC-address of bluetooth device: ${reset}")" macid
+fetched_index_no() {
+	echo -e "${blue}----------------------------------------${reset}"
+	echo -e "${green}[+]${reset} ${bold}Fetched the index number as $1 !! ${reset}"
+	echo -e "${blue}----------------------------------------${reset}"
+}
 
-    echo "#!/bin/bash" > $location/.dms
-    echo "export device='$device' " >> $location/.dms
-    echo "export macid=$macid" >> $location/.dms
-fi
+set_profile() {
+	echo -e "${green}[+]${reset} ${bold}Fetching the index number for $device... !! ${reset}"
 
-source $location/.dms
+	index_string=$(pactl list short cards | grep "$mac_id")
+	index_no=${index_string:0:1}
+	fetched_index_no "$index_no"
 
-MACID_FILE=$location/.mac_id
-
-if [ ! -f "$MACID_FILE" ]; then
-
-	echo "#!/bin/bash" > $location/.mac_id
-    echo export mac_id="$macid" | tr : _ >> $location/.mac_id
-
-fi
-
-source $location/.mac_id
-
-## Defining parameters for profiles and smart-switch
+	echo -e "${green}[+]${reset} ${bold}Setting profile suitable for ${green}$2${reset} !! ${reset}
+	"
+	pactl set-card-profile "$index_no" "$1"
+}
 
 USAGE="$(basename "$0") [-h] [connect/disconnect] [-s on/off] [-p ad2p/hsp/hfp/off] -- Program to manage multiple things related to dual channel bluetooth device under one roof.
 
@@ -64,177 +64,76 @@ where:
     -s : change the state of smartswitch
     -p : change profile"
 
+## Obtaining the MAC-address and Name for your "dual channel bluetooth device". 
+## Executed at the very first time only...
+DMS_FILE=$location/.dms
+MACID_FILE="$location"/.mac_id
+if [ ! -f "$DMS_FILE" ]; then
+	echo
+	echo -e "${bold}Listing out available bluetooth devices ever connected..${reset}
+	"
+    bt-device -l
+
+    echo  
+	read -rp "$(echo -e "${white}[*]${reset} ${blue}Enter the name of bluetooth device: ${reset}")" device
+	echo ----------------------------------------
+    read -rp "$(echo -e "${white}[*]${reset} ${blue}Enter the MAC-address of bluetooth device: ${reset}")" macid
+
+    echo "#!/bin/bash" > "$location"/.dms
+    echo "export device='$device' " >> "$location"/.dms
+    echo "export macid=$macid" >> "$location"/.dms
+fi
+source "$location"/.dms
+
+if [ ! -f "$MACID_FILE" ]; then
+	echo "#!/bin/bash" > "$location"/.mac_id
+    echo export mac_id="$macid" | tr : _ >> "$location"/.mac_id
+fi
+source "$location"/.mac_id
+
+## Defining parameters for profiles and smart-switch
 while getopts p:s:h input
 do
 case "${input}"
 in
-p) profile=${OPTARG};;
-s) smartswitch=${OPTARG};;
-h) echo "${USAGE}" && exit 0 ;;
-*)  echo
-	echo "Invalid option: -$input" && exit 0 ;;
+	p) profile=${OPTARG};;
+	s) smartswitch=${OPTARG};;
+	h) echo "${USAGE}" && exit 0 ;;
+	*)  echo
+		echo "Invalid option: -$input" && exit 0 ;;
 esac
 done
 
-## Now the real stuff
-
+## Now the connection stuff
 connection_status=$1
-
-if [ $connection_status == connect ]; then
-
-	echo
-	bluetoothctl connect $macid
-
-	echo -e "${blue}----------------------------------------${reset}"
-
-elif [ $connection_status == disconnect ]; then
-
-	echo
-	bluetoothctl disconnect $macid
-
-	echo -e "${blue}----------------------------------------${reset}"
-
+if [ "$connection_status" == connect ]; then
+	CD connect
+elif [ "$connection_status" == disconnect ]; then
+	CD disconnect
 fi
 
 ## Logic for smart-switch
-
 PULSE_CONFIG_FILE=~/.config/pulse/default.pa
-
 if [[ $smartswitch == 'off' ]]; then
-
-	echo
-
-	if [ ! -f "$PULSE_CONFIG_FILE" ]; then
-
-		echo -e "${green}[+]${reset} ${bold}Copying the dummy config file to it's real location...${reset}"
-		cp $location/.default_pulse_config.pa ~/.config/pulse/default.pa
-
-		echo -e "${green}[+]${reset} ${bold}Editing the config file for pulseaudio...${reset}"
-		sed -i 's/load-module module-bluetooth-policy auto_switch=2/load-module module-bluetooth-policy auto_switch=false/g' ~/.config/pulse/default.pa	
-
-	else
-
-		echo -e "${green}[+]${reset} ${bold}Editing the config file for pulseaudio...${reset}"
-		sed -i 's/load-module module-bluetooth-policy auto_switch=2/load-module module-bluetooth-policy auto_switch=false/g' ~/.config/pulse/default.pa
-
-	fi
-
-	echo -e "${blue}----------------------------------------${reset}"
-	echo -e "${green}[+]${reset} ${bold}Restarting pulse demon...${reset}"
-	echo 
-
-	pulseaudio -k
-	bluetoothctl connect $macid
-	echo -e "${blue}----------------------------------------${reset}"
-
-	sleep 2
-
+	set_smartswitch 2 false
 elif [[ $smartswitch == 'on' ]]; then 
-
-	echo
-
-	if [ ! -f "$PULSE_CONFIG_FILE" ]; then
-
-		echo -e "${green}[+]${reset} ${bold}Copying the dummy config file to it's real location...${reset}"
-		cp $location/.default_pulse_config.pa ~/.config/pulse/default.pa
-
-		echo -e "${green}[+]${reset} ${bold}Editing the config file for pulseaudio...${reset}"
-		sed -i 's/load-module module-bluetooth-policy auto_switch=false/load-module module-bluetooth-policy auto_switch=2/g' ~/.config/pulse/default.pa
-
-	else
-
-		echo -e "${green}[+]${reset} ${bold}Editing the config file for pulseaudio...${reset}"
-		sed -i 's/load-module module-bluetooth-policy auto_switch=false/load-module module-bluetooth-policy auto_switch=2/g' ~/.config/pulse/default.pa
-
-	fi
-	
-	echo -e "${blue}----------------------------------------${reset}"
-	echo -e "${green}[+]${reset} ${bold}Restarting pulse demon...${reset}"
-	echo 
-
-	pulseaudio -k
-	bluetoothctl connect $macid
-	echo -e "${blue}----------------------------------------${reset}"
-
-	sleep 2
-
+	set_smartswitch false 2
 else 
-
 	echo
 	echo -e "${green}[+]${reset} ${red}${bold}NOT${reset} ${bold}changing the state of smartswitch !! ${reset}"
-	echo -e "${blue}----------------------------------------${reset}"
-
 fi
+echo -e "${blue}----------------------------------------${reset}"
 
 ## Logic for profiles
-
 if [[ $profile == 'ad2p' ]]; then
-
-	echo -e "${green}[+]${reset} ${bold}Fetching the index number for $device... !! ${reset}"
-
-	index_string=$(pactl list short cards | grep $mac_id)
-	index_no=${index_string:0:1}
-
-	echo -e "${blue}----------------------------------------${reset}"
-	echo -e "${green}[+]${reset} ${bold}Fetched the index number as $index_no !! ${reset}"
-	echo -e "${blue}----------------------------------------${reset}"
-
-	echo -e "${green}[+]${reset} ${bold}Setting profile suitable for ${green}MUSIC${reset} !! ${reset}"
-	echo ""
-
-	pactl set-card-profile $index_no a2dp_sink
-
+	set_profile a2dp_sink 'MUSIC'
 elif [[ $profile == 'hsp' ]]; then
-
-	echo -e "${green}[+]${reset} ${bold}Fetching the index number for $device... !! ${reset}"
-
-	index_string=$(pactl list short cards | grep $mac_id)
-	index_no=${index_string:0:1}
-
-	echo -e "${blue}----------------------------------------${reset}"
-	echo -e "${green}[+]${reset} ${bold}Fetched the index number as $index_no !! ${reset}"
-	echo -e "${blue}----------------------------------------${reset}"
-
-	echo -e "${green}[+]${reset} ${bold}Setting profile suitable for ${green}SPEAKER+MICROPHONE${reset} !! ${reset}"
-	echo ""
-
-	pactl set-card-profile $index_no headset_head_unit
-
+	set_profile headset_head_unit 'SPEAKER+MICROPHONE'
 elif [[ $profile == 'hfp' ]]; then
-
-	echo -e "${green}[+]${reset} ${bold}Fetching the index number for $device... !! ${reset}"
-
-	index_string=$(pactl list short cards | grep $mac_id)
-	index_no=${index_string:0:1}
-
-	echo -e "${blue}----------------------------------------${reset}"
-	echo -e "${green}[+]${reset} ${bold}Fetched the index number as $index_no !! ${reset}"
-	echo -e "${blue}----------------------------------------${reset}"
-
-	echo -e "${green}[+]${reset} ${bold}Setting profile suitable for ${green}SPEAKER+MICROPHONE${reset} !! ${reset}"
-	echo ""
-
-	pactl set-card-profile $index_no handsfree_head_unit
-
+	set_profile handsfree_head_unit 'SPEAKER+MICROPHONE'
 elif [[ $profile == 'off' ]]; then
-	
-	echo -e "${green}[+]${reset} ${bold}Fetching the index number for $device... !! ${reset}"
-
-	index_string=$(pactl list short cards | grep $mac_id)
-	index_no=${index_string:0:1}
-
-	echo -e "${blue}----------------------------------------${reset}"
-	echo -e "${green}[+]${reset} ${bold}Fetched the index number as $index_no !! ${reset}"
-	echo -e "${blue}----------------------------------------${reset}"
-
-	echo -e "${green}[+]${reset} ${bold}Setting profile to ${green}OFF${reset} !! ${reset}"
-	echo ""
-
-	pactl set-card-profile $index_no off
-
+	set_profile off 'OFF'
 else
-    
-	echo -e "${green}[+]${reset} ${red}${bold}NOT${reset} ${bold}changing profile !! ${reset}"
-	echo ""
-
+	echo -e "${green}[+]${reset} ${red}${bold}NOT${reset} ${bold}changing profile !! ${reset}
+	"
 fi
