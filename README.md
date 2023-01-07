@@ -1,8 +1,14 @@
+<div id="top"></div>
+
 # WHAPC - Wireless Headset Audio Profile Controller
 
 <!-- PROJECT SHIELDS -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links-->
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
+[![MIT License][license-shield]][license-url]
 [![LinkedIn][linkedin-shield]][linkedin-url]
 
   <p align="center">
@@ -28,7 +34,6 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#features">Features</a></li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#contact">Contact</a></li>
   </ol>
@@ -39,8 +44,7 @@
 
 I had to manage my profiles using the gui tool, had to connect disconnect, and change profiles while listening to song and when i had to call, all of this needed
 a separate tool to implement and several commands which needed human interaction, that's exactly where this script will come in handy it reduced human interaction 
-to the point of execution of command and put all of those things 'I USED' into one place, you want something else? Fork it or send a pull request so that i can
-add this into the original script.
+to the point of execution of command and put all of those things 'I USED' into one place.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -53,7 +57,7 @@ add this into the original script.
 <!-- GETTING STARTED -->
 ## Getting Started
 
-I will be illustrating you on how to setup the tool and what features it has in the next few sections.
+_To install and configure the project on your system locally, use suitable method:_
 
 ### Installation
 
@@ -85,21 +89,12 @@ I will be illustrating you on how to setup the tool and what features it has in 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-<!-- FEATURES -->
-## Features
-
-- [ ] Connecting/Disconnecting the device.
-- [ ] Changing the audio profile.
-- [ ] Changing the state of smart-switch
-
 See the [open issues](https://github.com/proffapt/whapc/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
 ## Usage
-
-Here are a few use cases of the script with currect set of features:
 
 1. Connecting/Disconnecting the device:
 
@@ -129,16 +124,39 @@ Here are a few use cases of the script with currect set of features:
 <!-- CONTACT -->
 ## Contact
 
-Arpit Bhardwaj - [@proffapt](https://twitter.com/proffapt) - proffapt@protonmail.com
+<p>
+📫 Arpit Bhardwaj ( aka proffapt ) -   
 
-Project Link: [https://github.com/proffapt/whapc](https://github.com/proffapt/whapc)
+<a href="https://twitter.com/proffapt">
+  <img align="center" alt="proffapt's Twitter " width="22px" src="https://raw.githubusercontent.com/edent/SuperTinyIcons/master/images/svg/twitter.svg" />
+</a>
+<a href="https://t.me/proffapt">
+  <img align="center" alt="proffapt's Telegram" width="22px" src="https://raw.githubusercontent.com/edent/SuperTinyIcons/master/images/svg/telegram.svg" />
+</a>
+<a href="https://www.linkedin.com/in/proffapt/">
+  <img align="center" alt="proffapt's LinkedIn" width="22px" src="https://raw.githubusercontent.com/edent/SuperTinyIcons/master/images/svg/linkedin.svg" />
+</a> 
+<a href="mailto:proffapt@pm.me">
+  <img align="center" alt="proffapt's mail" width="22px" src="https://raw.githubusercontent.com/edent/SuperTinyIcons/master/images/svg/mail.svg" />
+</a> 
+<a href="https://cybernity.group">
+  <img align="center" alt="proffapt's forum for cybernity" width="22px" src="https://cybernity.group/uploads/default/original/1X/a8338f86bbbedd39701c85d5f32cf3d817c04c27.png" />
+</a> 
+</p>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-<!-- MARKDOWN LINKS -->
+<!-- MARKDOWN LINKS & IMAGES -->
+
+[contributors-shield]: https://img.shields.io/github/contributors/proffapt/whapc.svg?style=for-the-badge
+[contributors-url]: https://github.com/proffapt/whapc/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/proffapt/whapc.svg?style=for-the-badge
+[forks-url]: https://github.com/proffapt/whapc/network/members
 [stars-shield]: https://img.shields.io/github/stars/proffapt/whapc.svg?style=for-the-badge
 [stars-url]: https://github.com/proffapt/whapc/stargazers
 [issues-shield]: https://img.shields.io/github/issues/proffapt/whapc.svg?style=for-the-badge
 [issues-url]: https://github.com/proffapt/whapc/issues
+[license-shield]: https://img.shields.io/github/license/proffapt/whapc.svg?style=for-the-badge
+[license-url]: https://github.com/proffapt/whpac/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/proffapt
