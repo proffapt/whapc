@@ -1,5 +1,7 @@
 <div id="top"></div>
 
+> **Note** This repository has been archived simply because I lost interest in the project as I don't use linux anymore.
+
 # WHAPC - Wireless Headset Audio Profile Controller
 
 <!-- PROJECT SHIELDS -->
@@ -145,6 +147,21 @@ See the [open issues](https://github.com/proffapt/whapc/issues) for a full list 
 </p>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
+
+<!-- ACKNOWLEDGMENTS -->
+## Acknowledgments
+
+* [Choose an Open Source License](https://choosealicense.com)
+* [Img Shields](https://shields.io)
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+## Miscelleneous
+
+Do consider looking at other paradigms of this documentation
+  - [License used](LICENSE.txt)
+  - [Code Of Conduct](CODE_OF_CONDUCT.md)
+  - [How to contribute?](CONTRIBUTING.md)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
